@@ -1,41 +1,49 @@
 import { Component } from '@angular/core';
 
-export interface Person{
-  name:string,
-  surname:string,
-  age:number
+export interface Person {
+  name: string;
+  surname: string;
+  age: number;
+  isFavorite: boolean;  // Nueva propiedad
 }
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  // Lista de personas
+  people: Person[] = [];
 
-  people:Person[] = [];
+  // Datos del formulario
+  persona = {
+    name: '',
+    surname: '',
+    age: null
+  };
+
   constructor() {
-    this.people.push({
-      name:"Juan A.",
-      surname:"García Gómez",
-      age:47
-    });
-    this.people.push({
-      name:"Alejandro.",
-      surname:"García Gómez",
-      age:46
-    });
-
-    this.people.push({
-      name:"Juan",
-      surname:"García Valencia",
-      age:5
-    });
-
-    this.people.push({
-      name:"María del Mar",
-      surname:"Valencia Valencia",
-      age:47
-    });
   }
 
+  // Función para registrar una nueva persona desde el formulario
+  registrarPersona() {
+    if (this.persona.name && this.persona.surname && this.persona.age !== null) {
+      // Añadir la nueva persona al arreglo con la propiedad isFavorite por defecto en false
+      this.people.push({
+        name: this.persona.name,
+        surname: this.persona.surname,
+        age: this.persona.age,
+        isFavorite: false
+      });
+
+      // Limpiar el formulario
+      this.persona = { name: '', surname: '', age: null };
+    }
+  }
+
+  // Función para alternar el estado de favorito
+  toggleFavorite(person: Person) {
+    person.isFavorite = !person.isFavorite;
+  }
 }

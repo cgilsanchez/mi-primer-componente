@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Formulario de Registro
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,20 +9,75 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Registro</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Formulario para capturar los datos de la persona -->
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let person of people">
-        <app-personal-card 
-        [name]="person.name" 
-        [surname]="person.surname" 
-        [age]="person.age">
-        </app-personal-card>      
+      <ion-col size="12">
+        <form (ngSubmit)="registrarPersona()" #personaForm="ngForm">
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input type="text" [(ngModel)]="persona.name" name="name" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Apellido</ion-label>
+            <ion-input type="text" [(ngModel)]="persona.surname" name="surname" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Edad</ion-label>
+            <ion-input type="number" [(ngModel)]="persona.age" name="age" required></ion-input>
+          </ion-item>
+          <ion-button expand="block" type="submit" [disabled]="!personaForm.form.valid">Registrar</ion-button>
+        </form>
       </ion-col>
     </ion-row>
   </ion-grid>
-  
 
+  <!-- Mostrar las tarjetas de personas registradas -->
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let person of people" size="12" size-md="6">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-grid>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="3">
+                    <ion-avatar>
+                      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                    </ion-avatar>
+                  </ion-col>
+                  <ion-col>
+                    <ion-text color="dark">{{ person.name }} {{ person.surname | slice:0:1 | uppercase }}.</ion-text>
+                  </ion-col>
+                  <!-- Botón de favorito (estrella) -->
+                  <ion-col size="2" class="ion-text-end">
+                    <ion-button fill="clear" (click)="toggleFavorite(person)">
+                      <ion-icon 
+                        [color]="person.isFavorite ? 'warning' : 'medium'" 
+                        name="star"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-input label="Nombre" type="text" placeholder="Nombre" labelPlacement="floating" [value]="person.name" readonly></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input label="Apellidos" type="text" placeholder="Apellidos" labelPlacement="floating" [value]="person.surname" readonly></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input label="Edad" type="text" placeholder="Edad" labelPlacement="floating" [value]="person.age + ' años'" readonly></ion-input>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
